@@ -1,0 +1,43 @@
+/*new add class sh_Customer_groups*/
+.fie{
+	padding:12px;
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	margin-bottom:12px;
+	}
+.hand{
+	cursor:pointer;
+	}
+.c_tab{
+	border-collapse:collapse;
+	margin-top:5px;
+	
+	}
+.c_tab, .c_tab th, .c_tab td{
+	border:1px solid #cfcfcf;
+	}
+.c_tab th, .c_tab td{
+	padding:3px;
+	vertical-align:middle;
+	}
+.c_tab th{
+	background:url(../../images/listico1_07.png) repeat-x;
+	}
+	
+.bgg{
+	background:url(../../images/nkk_07.png) center center no-repeat;
+	width:100%;
+	}
+.lis {
+	background-color: #e0eef9;
+	height: 20px;
+	border: 1px solid #cfcfcf;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	cursor: pointer;
+	line-height: 20px;
+	overflow: hidden;
+	padding: 0px;
+}

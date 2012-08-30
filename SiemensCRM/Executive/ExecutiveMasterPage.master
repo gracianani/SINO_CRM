@@ -1,0 +1,151 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="ExecutiveMasterPage.master.cs"
+    Inherits="Executive_ExecutiveMasterPage" %>
+    
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title></title>
+    <asp:contentplaceholder id="head" runat="server">
+    </asp:contentplaceholder>
+    <style type="text/css">
+        .r
+        {
+            position: relative;
+            top: 0px;
+            left: 0px;
+            height: 575px;
+            width: 190px;
+        }
+        .style1
+        {
+            width: 190px;
+        }
+    </style>
+
+    <script type="text/javascript" src="../js/action.js"></script>
+
+</head>
+<body>
+   <%-- <asp:Panel ID="Panel3" runat="server" Width="100%" BackImageUrl="~/images/bg.jpg"
+        Style="background-repeat: repeat-x; background-attachment: scroll; background-position: top;
+        margin: auto;" Height="820px">
+        <table width="100%" style="text-align: center;">--%>
+        <asp:Panel ID="Panel3" runat="server" Width="1024" 
+        Style="margin:0 auto;background-color:#FFFFFF;padding:0;" Height="820px">
+        <table width="100%" style="text-align: center;background-color:#FFFFFF;">
+            <tr valign="top">
+                <td>
+                </td>
+                <td style="width: 1024px" align="left">
+                    <form id="form1" runat="server" target="_self">
+                        <div>
+                            <asp:Panel ID="Panel1" runat="server" BackImageUrl="~/images/logo.JPG" Height="108px">
+                                <br />
+                                <br />
+                            </asp:Panel>
+                            <hr />
+                            <asp:Panel ID="Panel4" runat="server">
+                                <div style="float: left; padding-right: 5px; width: 100%">
+                                    <strong>
+                                        <asp:Label ID="lbl_welcom" runat="server" Text="Welcome Alias"></asp:Label>
+                                        <asp:Label ID="lbl_currentmeetingdate" runat="server" Text=""></asp:Label>
+                                    </strong>&nbsp;&nbsp;&nbsp;&nbsp;<strong><asp:Label ID="lblLock" runat="server" Visible="false" 
+                                        Text="The system is currently locked for data entry!" ForeColor="Red"></asp:Label></strong>
+                                    <div style="width:100%;" >
+                                    <strong><asp:Label ID="Label1" runat="server" Text="Current System is Test Server." style="float:left;display:inline;"></asp:Label></strong>
+                                    <%-- by daixuesong 20110602 Item W27 del start--%>
+                                        <%--<asp:Button ID="btn_logoff" runat="server" Text="Logoff" Width="60px" OnClick="btn_Logoff_Click" />--%>
+                                        <%-- by daixuesong 20110602 Item W27 del end--%>
+                                        <%-- by daixuesong 20110602 Item W27 add start--%>
+                                        <span style="float:right;display:inline;"><asp:Button ID="btn_logoff" runat="server" Text="Logoff" Width="60px" OnClick="btn_Logoff_Click"  UseSubmitBehavior="False"/></span>
+                                        <%-- by daixuesong 20110602 Item W27 add end--%>
+                                    </div>
+                                </div>
+                            </asp:Panel>
+                            
+                            <table style="text-align: center; height: 660px; width: 100%;">
+                                <tr>
+                                    <td id="menu_o" align="left" valign="top" style="width: 12px; display: none;">
+                                        <img style="cursor: pointer" src="../images/cl_op_03.gif" alt="open the menu" width="12"
+                                            height="53" onclick="show('menu_c');hide('menu_o')" />
+                                    </td>
+                                    <td id="menu_c" align="left" class="style1" valign="top">
+                                        <div style="border-style: groove; border-width: thin; width:100%; height: 660px;
+                                            margin-right: 0px; margin-top: 0px;">
+                                            <asp:Panel ID="Panel_navigation" runat="server" Visible="true" CssClass="r">
+                                                <img style="position: absolute; right: -1px; top: -1px; cursor: pointer" src="../images/cl_op_06.gif"
+                                                    alt="close the menu" width="54" height="13" onclick="show('menu_o');hide('menu_c')" />
+                                                <br />
+                                                <asp:TreeView ID="navi_tree" runat="server" ImageSet="Arrows" ShowLines="True" Width="100%">
+                                                    <ParentNodeStyle Font-Bold="False" />
+                                                    <HoverNodeStyle Font-Underline="True" ForeColor="#5555DD" />
+                                                    <SelectedNodeStyle Font-Underline="True" ForeColor="#5555DD" HorizontalPadding="0px"
+                                                        VerticalPadding="0px" />
+                                                    <Nodes>
+                                                        <asp:TreeNode Text="System Management" Value="System Management" Expanded="True">
+                                                            <asp:TreeNode Text="User" Value="User" Expanded="True">
+                                                                <asp:TreeNode Text="User Account" Value="User Account" NavigateUrl="~/Executive/ExecutiveProfile.aspx" />
+                                                                <%-- By daixuesong 20110505 Item 45 Delete Start --%>
+                                                                <%-- <asp:TreeNode Text="User Operation" Value="User Operation" NavigateUrl="~/Executive/ExecutiveRSMInfo.aspx" /> --%>
+                                                                <%-- By daixuesomg 20110505 Item 45 Delete End --%>
+                                                                <%-- By daixuesomg 20110505 Item 45 Add Start --%>
+                                                                <asp:TreeNode Text="User Relation" Value="User Relation" NavigateUrl="~/Executive/ExecutiveRSMInfo.aspx" />
+                                                                <%-- By daixuesomg 20110505 Item 45 Add End --%>
+                                                                <asp:TreeNode Text="Modify Password" Value="Modify Password" NavigateUrl="~/Executive/ExecutiveModifyPassword.aspx" />
+                                                            </asp:TreeNode>
+                                                            <asp:TreeNode Text="Master Data" Value="Master Data" Expanded="True">
+                                                                <asp:TreeNode Text="Segment/Product" Value="Segment/Product" NavigateUrl="~/Executive/ExecutiveSegmentProduct.aspx" />
+                                                                <asp:TreeNode Text="Sales Channel" Value="Sales Channel" NavigateUrl="~/Executive/ExecutiveSalesChannel.aspx" />
+                                                                <asp:TreeNode Text="Operation" Value="Operation" NavigateUrl="~/Executive/ExecutiveOperation.aspx" />
+                                                                <asp:TreeNode Text="Country Management" Value="Country Management" NavigateUrl="~/Executive/ExecutiveCountry.aspx"/>
+                                                                <asp:TreeNode Text="Country Relation" Value="Country Relation" NavigateUrl="~/Executive/ExecutiveRegion.aspx"/>
+                                                                <asp:TreeNode Text="Sales Org" Value="Sales Org" NavigateUrl="~/Executive/ExecutiveSalesOrg.aspx" />
+                                                                <asp:TreeNode Text="Currency/Exchange" Value="Currency/Exchange" NavigateUrl="~/Executive/ExecutiveCurrency.aspx" />
+                                                                <asp:TreeNode Text="Market" Value="Market" NavigateUrl="~/Executive/ExecutiveMarket.aspx"/>
+                                                            </asp:TreeNode>
+                                                        </asp:TreeNode>
+                                                        <asp:TreeNode Text="Input" Value="Input" Expanded="True">
+                                                            <asp:TreeNode Text="New Orders" Value="Booking Sales Data" NavigateUrl="~/Executive/ExecutiveBookingSalesData.aspx" />
+                                                            <asp:TreeNode Text="Sales Data &amp; Backlog" Value="Sales Data &amp; Backlog" NavigateUrl="~/Executive/ExecutiveSalesData.aspx" />
+                                                        </asp:TreeNode>
+                                                        <asp:TreeNode Text="Report" Value="Report" Expanded="True">
+                                                            <asp:TreeNode Text="Mina Reports" Value="Mina Reports" NavigateUrl="~/Executive/ExecutiveBookingsSalesForecast.aspx" />
+                                                            <%-- By yy 20110516 Item 53  del Start --%>
+                                                            <%--<asp:TreeNode Text="Standard Reports" Value="Standard Reports" NavigateUrl="~/Executive/ExecutiveReports.aspx" />--%>
+                                                            <%-- By yy 20110516 Item 53 del end --%>
+                                                            <%-- By yy 20110516 Item 53 add Start --%>
+                                                            <asp:TreeNode Text="Standard Reports" Value="Standard Reports" NavigateUrl="~/Executive/ExecutiveStandardReportView.aspx" />
+                                                            <%-- By yy 20110516 Item 53 add end --%>
+                                                            <asp:TreeNode Text="Individual Reports" Value="Individual Reports" NavigateUrl="~/Executive/ExecutiveReportView.aspx" />
+                                                            <asp:TreeNode Text="Select Meeting Date" Value="Set Select Date" NavigateUrl="~/Executive/ExecutiveSelectMeetingDate.aspx" />
+                                                        </asp:TreeNode>
+                                                    </Nodes>
+                                                    <NodeStyle Font-Names="Tahoma" Font-Size="10pt" ForeColor="Black" HorizontalPadding="5px"
+                                                        NodeSpacing="0px" VerticalPadding="0px" />
+                                                </asp:TreeView>
+                                            </asp:Panel>
+                                        </div>
+                                    </td>
+                                    <td style="width: 820px" align="left" valign="top">
+                                        <div style="width: 100%">
+                                            <asp:ScriptManager ID="ScriptManager1" runat="server" />
+                                            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                                            </asp:ContentPlaceHolder>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                            <hr />
+                            <div style="text-align: center; width: 100%;">
+                                Siemens HP Forecast & Planning Tool
+                            </div>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+    </asp:Panel>
+</body>
+</html>

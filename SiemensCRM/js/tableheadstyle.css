@@ -1,0 +1,11 @@
+@charset "utf-8";
+.flowtabhead {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 9;
+	background-color: #ffffff;
+}
+table, td, th {
+	border-collapse:collapse;
+}

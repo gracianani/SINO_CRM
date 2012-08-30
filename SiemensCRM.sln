@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SiemensCRM", "SiemensCRM\", "{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}"
+	ProjectSection(WebsiteProperties) = preProject
+		SccProjectName = ""
+		SccAuxPath = ""
+		SccLocalPath = ""
+		SccProvider = ""
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/SiemensCRM"
+		Debug.AspNetCompiler.PhysicalPath = "SiemensCRM\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\SiemensCRM\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/SiemensCRM"
+		Release.AspNetCompiler.PhysicalPath = "SiemensCRM\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\SiemensCRM\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "13055"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+		Debug|Any CPU = Debug|Any CPU
+		Debug|X86 = Debug|X86
+		Deploy|.NET = Deploy|.NET
+		Deploy|Any CPU = Deploy|Any CPU
+		Deploy|X86 = Deploy|X86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Debug|.NET.Build.0 = Debug|Any CPU
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Debug|X86.ActiveCfg = Debug|Any CPU
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Debug|X86.Build.0 = Debug|Any CPU
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Deploy|.NET.ActiveCfg = Debug|Any CPU
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Deploy|.NET.Build.0 = Debug|Any CPU
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Deploy|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Deploy|Any CPU.Build.0 = Debug|Any CPU
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Deploy|X86.ActiveCfg = Debug|Any CPU
+		{AF5EE9DC-1D9B-4E7E-B3E6-FE36DDCD72F0}.Deploy|X86.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

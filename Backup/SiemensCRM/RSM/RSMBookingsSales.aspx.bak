@@ -1,0 +1,278 @@
+﻿<%@ Page Title="Bookings Data" Language="C#" MasterPageFile="~/RSM/RSMMasterPage.master"
+    AutoEventWireup="true" CodeFile="RSMBookingsSales.aspx.cs" Inherits="RSMBookingsSalesReadOnly"
+    EnableEventValidation="false" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <div style="width: 830px; overflow: scroll; height: 480px;">
+        <table>
+            <tr>
+                <td colspan="20">
+                    <asp:Label ID="label_salesOrg" runat="server" Text="SalesOrganization:"></asp:Label>&nbsp;
+                    <asp:DropDownList ID="ddlist_salesOrg" runat="server" Width="350px" AutoPostBack="True"
+                        OnSelectedIndexChanged="ddlist_salesOrg_SelectedIndexChanged">
+                    </asp:DropDownList>
+                    &nbsp;&nbsp;
+                    <asp:Label ID="label_segment" runat="server" Text="Segment:"></asp:Label>&nbsp;
+                    <asp:DropDownList ID="ddlist_segment" runat="server" Width="60px" >
+                    </asp:DropDownList>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="20">
+                    <asp:Label ID="label_country" runat="server" Text="SubRegion:"></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <asp:DropDownList ID="ddlist_country" runat="server" Width="350px">
+                    </asp:DropDownList>
+                    &nbsp;&nbsp;
+                    <asp:Button ID="btn_search" runat="server" Text="Search" Width="60px" OnClick="btn_search_Click" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="20">
+                    *****************************************************************************************
+                </td>
+            </tr>
+            <tr>
+                <td colspan="20">
+                    <asp:Panel ID="panel_head" runat="server">
+                        <asp:Label ID="label_RSMAbbr" runat="server" Text="" Font-Bold="True" Font-Size="Large"></asp:Label>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <asp:Label ID="label_headdescription" runat="server" Text="" Font-Bold="True" Font-Size="Medium"></asp:Label>
+                        <br />
+                        <table>
+                            <tr>
+                                <td>
+                                    <asp:Label ID="lbl_currency" runat="server" Text="" Font-Bold="true"></asp:Label>
+                                    <br />
+                                    <asp:Button ID="btn_local" runat="server" Text="" OnClick="btn_local_Click" />
+                                    <asp:Button ID="btn_EUR" runat="server" Text="kEUR" OnClick="btn_EUR_Click" />
+                                </td>
+                                <td>
+                                    Traffic Light:<asp:ImageButton ID="ibtn_red" runat="server" ImageUrl="~/images/red.png" OnClick="ibtn_red_Click" />
+                                    <asp:ImageButton ID="ibtn_orange" runat="server" ImageUrl="~/images/orange.png" OnClick="ibtn_orange_Click" />
+                                    <asp:ImageButton ID="ibtn_green" runat="server" ImageUrl="~/images/green.png" OnClick="ibtn_green_Click" />
+                                    |&nbsp;Current Status:<asp:Image ID="img_status" runat="server" />
+                                    <br />
+                                    <asp:LinkButton ID="lbtn_editRSM" runat="server" Font-Bold="True" Font-Underline="False"
+                                        OnClick="lbtn_editRSM_Click">Edit Booking Data-></asp:LinkButton>
+                                    &nbsp;&nbsp;
+                                    <asp:Button ID="btn_export" runat="server" Text="Export To Excel" OnClick="btn_export_Click"
+                                        Width="230px" BackColor="#66CCFF" Font-Bold="True" />
+                                </td>
+                            </tr>
+                        </table>
+                    </asp:Panel>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="20">
+                    *****************************************************************************************
+                </td>
+            </tr>
+            <div runat="server" id="div_export">
+                <tr>
+                    <td align="left" valign="top">
+                        <div>
+                            <asp:GridView ID="gv_bookingbydatebyproduct" runat="server" CellPadding="4" ForeColor="#333333"
+                                GridLines="None">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                        <div>
+                            <asp:GridView ID="gv_bookingTotalbydatebyproduct" runat="server" CellPadding="4"
+                                ForeColor="#333333" GridLines="None" PageSize="10">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                    </td>
+                    <td align="left" valign="top">
+                        <div>
+                            <asp:GridView ID="gv_booking1bydatebyproduct" runat="server" CellPadding="4" ForeColor="#333333"
+                                GridLines="None">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                        <div>
+                            <asp:GridView ID="gv_booking1Totalbydatebyproduct" runat="server" CellPadding="4"
+                                ForeColor="#333333" GridLines="None" PageSize="10">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                    </td>
+                    <td align="left" valign="top">
+                        <div>
+                            <asp:GridView ID="gv_booking2bydatebyproduct" runat="server" CellPadding="4" ForeColor="#333333"
+                                GridLines="None">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                        <div>
+                            <asp:GridView ID="gv_booking2Totalbydatebyproduct" runat="server" CellPadding="4"
+                                ForeColor="#333333" GridLines="None" PageSize="10">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                    </td>
+                    <td align="left" valign="top">
+                        <div>
+                            <asp:GridView ID="gv_booking3bydatebyproduct" runat="server" CellPadding="4" ForeColor="#333333"
+                                GridLines="None">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                        <div>
+                            <asp:GridView ID="gv_booking3Totalbydatebyproduct" runat="server" CellPadding="4"
+                                ForeColor="#333333" GridLines="None" PageSize="10">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                    </td>
+                    <td align="left" valign="top">
+                        <div>
+                            <asp:GridView ID="gv_booking4bydatebyproduct" runat="server" CellPadding="4" ForeColor="#333333"
+                                GridLines="None">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                        <div>
+                            <asp:GridView ID="gv_booking4Totalbydatebyproduct" runat="server" CellPadding="4"
+                                ForeColor="#333333" GridLines="None" PageSize="10">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                    </td>
+                    <td align="left" valign="top">
+                        <asp:Table ID="table_bookingsByProduct" runat="server" Visible="false">
+                        </asp:Table>
+                    </td>
+                    <td align="left" valign="top">
+                        <div>
+                            <asp:GridView ID="gv_bookingtbydate" runat="server" CellPadding="4" ForeColor="#333333"
+                                GridLines="None" PageSize="10">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                        <div>
+                            <asp:GridView ID="gv_bookingtTotalbydate" runat="server" CellPadding="4" ForeColor="#333333"
+                                GridLines="None" PageSize="10">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                    </td>
+                    <td align="left" valign="top">
+                        <div>
+                            <asp:GridView ID="gv_bookingnextbydate" runat="server" CellPadding="4" ForeColor="#333333"
+                                GridLines="None" PageSize="10">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                        <div>
+                            <asp:GridView ID="gv_bookingnextTotalbydate" runat="server" CellPadding="4" ForeColor="#333333"
+                                GridLines="None" PageSize="10">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                    </td>
+                    <td align="left" valign="top">
+                        <div>
+                            <asp:GridView ID="gv_VS" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                        <div>
+                            <asp:GridView ID="gv_VSTotal" runat="server" CellPadding="4" ForeColor="#333333"
+                                GridLines="None">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                    </td>
+                    <td align="left" valign="top">
+                        <div>
+                            <asp:GridView ID="gv_VS03" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                        <div>
+                            <asp:GridView ID="gv_VSTotal03" runat="server" CellPadding="4" ForeColor="#333333"
+                                GridLines="None">
+                                <RowStyle BackColor="#EFF3FB" />
+                                <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#2461BF" ForeColor="White" HorizontalAlign="Center" />
+                                <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                <AlternatingRowStyle BackColor="White" />
+                            </asp:GridView>
+                        </div>
+                    </td>
+                </tr>
+            </div>
+        </table>
+    </div>
+</asp:Content>
