@@ -29,7 +29,8 @@ public class SQLStatement
     private readonly SQLHelper helper = new SQLHelper();
     private readonly DisplayInfo info = new DisplayInfo();
     private readonly LogUtility log = new LogUtility();
-    private readonly GetMeetingDate meeting = new GetMeetingDate();
+    //private readonly GetMeetingDate meeting = new GetMeetingDate();
+    private readonly GetSelectMeetingDate meeting = new GetSelectMeetingDate();
     //ryzhang item49 20110519 add start
     private readonly GetSelectMeetingDate selectMeeting = new GetSelectMeetingDate();
     private readonly WebUtility web = new WebUtility();
@@ -1345,8 +1346,8 @@ public class SQLStatement
                             //+ " AND YEAR(TimeFlag) = '" + meeting.getyear() + "'"
                             //by ryzhang item49 del end
                             //by ryzhang item49 add start
-                            + " AND YEAR(TimeFlag) = '" + str_year + "'"
-                            + " AND MONTH(TimeFlag) = '" + str_month + "'"
+                            + " AND YEAR(TimeFlag) = '" + selectMeeting.getyear() + "'"
+                            + " AND MONTH(TimeFlag) = '" + selectMeeting.getmonth() + "'"
                             //by ryzhang item49 del start
                             + " THEN (CASE WHEN DeliverY = '" + str_year.Substring(2, 2) + "' OR DeliverY = 'YTD'"
                             + " THEN Amount*" + rate1.ToString().Replace(',', '.') + " ELSE Amount*" +
@@ -1357,8 +1358,8 @@ public class SQLStatement
                         + " WHERE SalesOrgID = " + str_salesOrgID
                         + " AND SegmentID = " + str_segmentID
                         + " AND OperationID = " + str_operationID
-                        + " AND YEAR(TimeFlag) = '" + str_year + "'"
-                        + " AND MONTH(TimeFlag) = '" + str_month + "'"
+                        + " AND YEAR(TimeFlag) = '" + selectMeeting.getyear() + "'"
+                        + " AND MONTH(TimeFlag) = '" + selectMeeting.getmonth() + "'"
                         + " GROUP BY BookingY,DeliverY"
                         + " ORDER BY BookingY,NewDeliverY ASC";
                 //by yyan item8 20110616 add start 
@@ -1378,8 +1379,8 @@ public class SQLStatement
                 for (int i = 0; i < ds_pro.Tables[0].Rows.Count; i++)
                 {
                     temp += ",ROUND(SUM(CASE WHEN ProductID = " + ds_pro.Tables[0].Rows[i][0].ToString().Trim()
-                            + " AND YEAR(TimeFlag) = '" + str_year + "'"
-                            + " AND MONTH(TimeFlag) = '" + str_month + "'";
+                            + " AND YEAR(TimeFlag) = '" + selectMeeting.getyear() + "'"
+                            + " AND MONTH(TimeFlag) = '" + selectMeeting.getmonth() + "'";
                     //by yyan 20110819 itemw118 edit start
                     if (str_month == "3" || str_month == "03")
                     {
@@ -1404,8 +1405,8 @@ public class SQLStatement
                         + " WHERE SalesOrgID = " + str_salesOrgID
                         + " AND SegmentID = " + str_segmentID
                         + " AND OperationID = " + str_operationID
-                        + " AND YEAR(TimeFlag) = '" + str_year + "'"
-                        + " AND MONTH(TimeFlag) = '" + str_month + "'"
+                        + " AND YEAR(TimeFlag) = '" + selectMeeting.getyear() + "'"
+                        + " AND MONTH(TimeFlag) = '" + selectMeeting.getmonth() + "'"
                         + " GROUP BY BookingY,DeliverY"
                         + " ORDER BY BookingY,NewDeliverY ASC";
             }

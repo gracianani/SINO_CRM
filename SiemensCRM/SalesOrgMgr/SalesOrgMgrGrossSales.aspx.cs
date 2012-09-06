@@ -453,7 +453,7 @@ public partial class SalesOrgMgr_Default : System.Web.UI.Page
         DataSet ds_date = helper.GetDataSet(query_date);
         if (ds_date.Tables[0].Rows.Count > 0 && !ds_date.Tables[0].Rows[0][0].ToString().Equals("") && ds_date.Tables[0].Rows[0][0].ToString() != null)
         {
-            label_show.Text = "This report is related to the meeting date " + ds_date.Tables[0].Rows[0][0].ToString();
+            label_show.Text = "This report is related to the meeting date " + ds_date.Tables[0].Rows[0][0].ToString() + "meeting time:" + meeting.getyear();
         }
         else
         {

@@ -1341,7 +1341,7 @@ public partial class RSM_RSMBookingBySalesOrgBySegment : System.Web.UI.Page
         sheet.Cells.WrapText = false;
         sheet.Cells.EntireColumn.AutoFit();
         // Export
-        string path = Server.MapPath("~") + @"\ExcelReport\" + DateTime.Now.ToString("yyyyMMdd") + @"\";
+        string path = Server.MapPath("~") + @"ExcelReport\" + DateTime.Now.ToString("yyyyMMdd") + @"\";
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);

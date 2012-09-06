@@ -22,16 +22,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
-// By DingJunjie 20110513 Item 7 Add Start
 using System.Text;
-// By DingJunjie 20110513 Item 7 Add End
-// By DingJunjie 20110601 ItemW18 Add Start
 using System.Text.RegularExpressions;
 using System.Drawing;
 using Resources;
 using AjaxPro;
 using System.Globalization;
-// By DingJunjie 20110601 ItemW18 Add End
 
 public partial class BookingSalesData : System.Web.UI.Page
 {
@@ -44,7 +40,6 @@ public partial class BookingSalesData : System.Web.UI.Page
     string preId = "Hid";
 
     private static bool NullData;
-    // get Meeting Date
     protected static string preyear;
     protected static string year;
     protected static string nextyear;
@@ -52,9 +47,7 @@ public partial class BookingSalesData : System.Web.UI.Page
     protected static string month;
     protected const string fiscalStart = "Oct.1";
     protected const string fiscalEnd = "Sept.30";
-    // by daixuesong 20110526 item43 add start
     private string countryID = "";
-    // by daixuesong 20110526 item43 add end
     DataSet productDs;
     private static bool butFlag = true;
 
@@ -67,52 +60,31 @@ public partial class BookingSalesData : System.Web.UI.Page
             log.WriteLog(LogUtility.LogErrorLevel.LOG_CRITICAL, "Only Administrator, General Sales Manager, RSM can access the page, BookingSalesData.aspx.");
             Response.Redirect("!/AccessDenied.aspx");
         }
-        // By DingJunjie 20110513 Item 7 Add Start
         meeting.setDate();
         preyear = meeting.getpreyear();
         year = meeting.getyear();
         nextyear = meeting.getnextyear();
         yearAfterNext = meeting.getyearAfterNext();
         month = meeting.getmonth();
-        // By DingJunjie 20110513 Item 7 Add End
         productDs = getProductBySegment(getSegmentID());
         if (!IsPostBack)
         {
-            // By DingJunjie 20110513 Item 7 Delete Start
-            //meeting.setDate();
-            //preyear = meeting.getpreyear();
-            //year = meeting.getyear();
-            //nextyear = meeting.getnextyear();
-            //yearAfterNext = meeting.getyearAfterNext();
-            //month = meeting.getmonth();
-            // By DingJunjie 20110513 Item 7 Delete End
-            // By DingJunjie 20110608 ItemW18 Add Start
             this.txtOldCusName.Attributes.Add("readonly", "readonly");
-            // By DingJunjie 20110608 ItemW18 Add End
-            //by yyan 20110630 itemw57 add start
             this.ddlist_projectYTD.Attributes.Add("readonly", "readonly");
-            //by yyan 20110630 itemw57 add end
             label_note.Text = "";
             this.lblError.Text = "";
             string str_segment = getSegmentInfo(getSegmentID()).Tables[0].Rows[0][0].ToString().Trim();
             label_RSMAbbr.Text = getRSMInfo(getRSMID()).Tables[0].Rows[0][0].ToString().Trim();
             label_headdescription.Text = str_segment + "-BOOKINGS for " + preyear + " and " + year;
             getCurrencyBySalesOrg(getSalesOrgID());
-            // By DingJunjie 20110524 Item 7 Delete Start
-            //helper.ExecuteNonQuery(CommandType.Text, "DELETE FROM [Bookings] WHERE Amount = 0", null);
-            // By DingJunjie 20110524 Item 7 Delete End
             pnl_edit.Visible = false;
-            // By DingJunjie 20110530 ItemW18 Add Start
             initDataTypeList();
             this.ddlDataType.SelectedValue = Request.QueryString["DataType"];
             ddlDataType_SelectedIndexChanged(sender, e);
-            // By DingJunjie 20110530 ItemW18 Add End
-
             setEditCustomer();
         }
     }
 
-    //Get infomation by URL
     private string getRSMID()
     {
         return Request.QueryString["RSMID"].ToString().Trim();
@@ -127,12 +99,10 @@ public partial class BookingSalesData : System.Web.UI.Page
     {
         return Request.QueryString["SalesOrgID"].ToString().Trim();
     }
-    // add by zy 20101224 start
     private string getCountryID()
     {
         return Request.QueryString["CountryID"].ToString().Trim();
     }
-    // add by zy 20101224 end
     private string getRole()
     {
         return Session["Role"].ToString().Trim();
@@ -321,31 +291,7 @@ public partial class BookingSalesData : System.Web.UI.Page
                 gv_bookingbydatebyproduct.Rows[gv_bookingbydatebyproduct.EditIndex].Cells[j+3].Text = "";
                 gv_bookingbydatebyproduct.Rows[gv_bookingbydatebyproduct.EditIndex].Cells[j+3].Controls.Clear();
                 gv_bookingbydatebyproduct.Rows[gv_bookingbydatebyproduct.EditIndex].Cells[j+3].Controls.Add(dp);
-                
-                //str_nexOp = ((TextBox)(gv_bookingbydatebyproduct.Rows[rIndex].Cells[j + 3].Controls[0])).Text.ToString().Trim();
-                //str_nexData = ((TextBox)(gv_bookingbydatebyproduct.Rows[rIndex].Cells[j + 1].Controls[0])).Text.ToString().Trim().Replace(',', '.');
-                //if (Regex.IsMatch(str_nexData, "^\\-?(\\d*|0)(\\.\\d*)?$") && Regex.IsMatch(str_nexOp, "^([A-Z]{1,4})$"))
-                //{
 
-                //    string id = getOperationIDByAbbr(str_nexOp).Trim();
-                //    if (string.IsNullOrEmpty(id))
-                //    {
-                //        label_note.ForeColor = Color.Red;
-                //        label_note.Text += "Operation whose abbr is '" + str_nexOp + "' isn't exist or unique.";
-                //        gv_bookingbydatebyproduct.EditIndex = -1;
-                //        return;
-                //    }
-                //    //opDic.Add(j, id);
-                //    string[] args = new string[] { gv_bookingbydatebyproduct.Rows[rIndex].Cells[j].Text, id, ((TextBox)(gv_bookingbydatebyproduct.Rows[rIndex].Cells[j + 1].Controls[0])).Text.ToString().Trim().Replace(',', '.') }; // productd,operationid,amount.
-                //    opDic.Add(j, args);
-                //}
-                //else
-                //{
-                //    label_note.ForeColor = Color.Red;
-                //    label_note.Text += pro + "'value was illegal.";
-                //    gv_bookingbydatebyproduct.EditIndex = -1;
-                //    return;
-                //}
 
             }
             SetHidValue(hidValues);
@@ -1994,39 +1940,28 @@ public partial class BookingSalesData : System.Web.UI.Page
         return Convert.ToInt32(ds.Tables[0].Rows[0][0]);
     }
 
-    // update by zy 20101228 start
-    //protected void add_booking(GridView gv, string bookingY, string deliverY, Label label_note, string CouID, string OpID)
     protected void add_booking(GridView gv, string bookingY, string deliverY, Label label_note,
         string CouID, string OpID, string CustomerID, string ProjectID, string SalesChannelID)
-    // update by zy 20101228 end
     {
         this.lblError.Visible = true;
         this.lblError.Text = "";
         DataSet ds_product = getProductBySegment(getSegmentID());
-
-        // add by zy 20110130 start
         string str_deliveryInFy = getDeliveryInFy(bookingY, deliverY);
         string str_NoInFy = getNoInFy(bookingY, deliverY);
-        // add by zy 20110130 end
-        // By DingJunjie 20110601 ItemW25 Add Start
         if (inputCheck(CouID, CustomerID, SalesChannelID, this.lblError))
         {
             if (isCountryCanUsed(CouID))
             {
                 if (isCSRelationExist(CouID))
                 {
-                    // By DingJunjie 20110601 ItemW25 Add End
-                    // update by zy 20101228 start
-                    //if (existRow(bookingY, deliverY, CouID, OpID))
-                    // By DingJunjie 20110601 ItemW18 Delete Start
-                    //if (existRow(bookingY, deliverY, CouID, OpID, CustomerID, ProjectID, SalesChannelID))
-                    // By DingJunjie 20110601 ItemW18 Delete End
-                    // By DingJunjie 20110601 ItemW18 Add Start
-                    //if (existRow(bookingY, deliverY, CouID, CustomerID, ProjectID, SalesChannelID, getSalesOrgID().Trim()))
-                    //// By DingJunjie 20110601 ItemW18 Add End
-                    //// update by zy 20101228 end
-                    //{
-                    if(!validateOperation(new Dictionary<int, string[]>(), getRSMID().Trim(), getSalesOrgID().Trim(), getSegmentID(), CouID, CustomerID, ProjectID, SalesChannelID, ""))
+                    var dict = new Dictionary<int, string[]>();
+
+                    for (int key = 0; key < ds_product.Tables[0].Rows.Count; key++)
+                    {
+                        var product = ds_product.Tables[0].Rows[key];
+                        dict.Add(key, new String[] { product.ItemArray[0].ToString(), OpID });
+                    }
+                    if(!validateOperation(dict, getRSMID().Trim(), getSalesOrgID().Trim(), getSegmentID(), CouID, CustomerID, ProjectID, SalesChannelID, ""))
                     {
                         gv.EditIndex = -1;
                         ScriptManager.RegisterStartupScript(this.upYTD1, this.upYTD1.GetType(), "UpdateExistError", "alert('The record had been existed!');", true);
@@ -2035,39 +1970,23 @@ public partial class BookingSalesData : System.Web.UI.Page
                     int recordId = getRowId(bookingY, deliverY, CouID, CustomerID, ProjectID, SalesChannelID, getSalesOrgID().Trim())+1;
                     for (int i = 0; i < ds_product.Tables[0].Rows.Count; i++)
                         {
-                            // update by zy 20110121 start
-                            //string insert_booking = "INSERT INTO [Bookings](RSMID, SalesOrgID, CountryID, CustomerID, BookingY, DeliverY, SegmentID, ProductID, OperationID, ProjectID, Amount, Comments, TimeFlag)"
                             string insert_booking = "INSERT INTO [Bookings](RecordID,RSMID, SalesOrgID, CountryID, CustomerID, BookingY, DeliverY, SegmentID, ProductID, OperationID, ProjectID, SalesChannelID, Amount, Comments,[Delivery in FY], [NO in FY],  TimeFlag)"
                                         + " VALUES("
                                         + recordId.ToString(CultureInfo.InvariantCulture) + ","
                                         + getRSMID().Trim() + ","
                                         + getSalesOrgID().Trim() + ","
                                         + CouID + ","
-                                // add by zy 20101228 start
                                         + CustomerID + ","
-                                // add by zy 20101228 end
                                         + "'" + bookingY + "'" + ","
                                         + "'" + deliverY + "'" + ","
                                         + getSegmentID() + ","
                                         + ds_product.Tables[0].Rows[i][0].ToString() + ","
-                                // update by zy 20101228 start
-                                //+ OpID + ",0,'NULL','"
                                         + OpID + ","
                                         + ProjectID + ","
-                                // add by zy 20110121 start
                                         + SalesChannelID + ","
-                                // add by zy 20110121 end
-                                // By DingJunjie 20110526 Item 7 Delete Start
-                                //+ "0,'NULL','"
-                                // By DingJunjie 20110526 Item 7 Delete End
-                                // By DingJunjie 20110526 Item 7 Add Start
                                           + "0,NULL,'"
-                                // By DingJunjie 20110526 Item 7 Add End
-                                // update by zy 20101228 end
-                                // add by zy 20110130 start
                                         + str_deliveryInFy + "','"
                                         + str_NoInFy + "','"
-                                // add by zy 20110130 end
                                         + year + "-" + month + "-01" + "')";
                             int count = helper.ExecuteNonQuery(CommandType.Text, insert_booking, null);
 
@@ -3534,17 +3453,6 @@ public partial class BookingSalesData : System.Web.UI.Page
             }
             if (opDic.Count < 1)
                 return;
-            //foreach (var item in opDic)
-            //{
-            //    if (string.IsNullOrEmpty(opIds))
-            //        opIds = item.Value;
-            //    else
-            //        opIds += "," + item.Value;
-            //}
-            //if (string.IsNullOrEmpty(opIds))
-            //    return;
-            //if (!validateOperation(opDic, str_RSMID, str_salesorgID, str_segmentID, str_countryID, str_customerID, str_projectID, str_salesChannelID,recordId))
-            //:TODO: test test
             if (!validateOperation(opDic, str_RSMID, str_salesorgID, str_segmentID, strCurSubRegionID, str_curcustomerID, str_curProjectID, str_curSalesChannelID, recordId))
             {
                 gv.EditIndex = -1;
@@ -4453,20 +4361,23 @@ public partial class BookingSalesData : System.Web.UI.Page
         string subregionID, string customerID, string projectID, string salesChannelID, string recordID)
     {
         StringBuilder sb = new StringBuilder();
+
         // productID and operationId defines here.
+        
         foreach (var item in opDic)
         { 
-            if(item.Value[2] !="0")
+            if (sb.Length < 1)
             {
-                if (sb.Length < 1)
-                    sb.Append(string.Format("([ProductID]={0} and [OperationID]={1} and Amount!=0 )", item.Value[0], item.Value[1]));
-                else
-                    sb.Append(string.Format(" or ([ProductID]={0} and [OperationID]={1}  and Amount!=0 )", item.Value[0], item.Value[1]));
+                sb.Append(string.Format("([ProductID]={0} and [OperationID]={1} )", item.Value[0], item.Value[1]));
+            }
+            else
+            {
+                sb.Append(string.Format(" or ([ProductID]={0} and [OperationID]={1} )", item.Value[0], item.Value[1]));
             }
         }
        
         StringBuilder sql = new StringBuilder();
-        sql.AppendLine(" select * from ");
+        sql.AppendLine(" select count(*) from ");
         sql.AppendLine("   Bookings ");
         sql.AppendLine(" WHERE ");
         sql.AppendLine("  RSMID=" + RSMID);
@@ -4480,18 +4391,18 @@ public partial class BookingSalesData : System.Web.UI.Page
         sql.AppendLine("  AND Month(TimeFlag)=" + month);
 
         // append product ID and operation Id constrains.
- /*       if (sb.Length > 0)
+       if (sb.Length > 0)
             sql.AppendLine(" and (" + sb.ToString() + ")");
-  */
+  
         if (!string.IsNullOrEmpty(recordID))
         {
             sql.AppendLine(" and RecordID <>" + recordID);
         }
         DataSet ds = helper.GetDataSet(sql.ToString());
-        if (ds == null || ds.Tables[0].Rows.Count < 1)
-            return true;
-        else
+        if (ds != null && (int)ds.Tables[0].Rows[0].ItemArray[0] ==7)
             return false;
+        else
+            return true;
     }
 
     [AjaxMethod]

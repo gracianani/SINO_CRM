@@ -531,7 +531,7 @@ public partial class Admin_AdminOperationalBookings : System.Web.UI.Page
                     //by yyan 20100616 item8 add start 
                     if (flagMoney == 1)
                     {
-                        if (dsTotalSum[count].Tables[0].Rows.Count > 0)
+                        if (dsTotalSum[count].Tables[0].Rows.Count > 0 || ds_budgetSum.Tables[0].Rows.Count > 0)
                         {
 
                             gvTotalSum[count] = bindDataBySalesOrgByOperation(dsTotalSum[count], gvTotalSum[count], "", ds_budgetSum);

@@ -45,6 +45,7 @@ public partial class SiemensCRMEnter : System.Web.UI.Page
             //by yyan item59 20110705 add start
             Session["MenuValue"] = "";
             //by yyan item59 20110705 add end
+            
             Response.Redirect("~/SiemensCRMHome.aspx");
         }
         else
@@ -68,7 +69,7 @@ public partial class SiemensCRMEnter : System.Web.UI.Page
     {
         try
         {
-            string path = Server.MapPath("~") + @"\ExcelReport\";
+            string path = Server.MapPath("~") + @"ExcelReport\";
             string folderName = DateTime.Now.ToString("yyyyMMdd");
             DirectoryInfo root = new DirectoryInfo(path);
             DirectoryInfo[] nodes = root.GetDirectories();

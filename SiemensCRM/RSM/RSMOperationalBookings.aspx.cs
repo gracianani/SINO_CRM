@@ -256,6 +256,41 @@ public partial class RSM_Default : System.Web.UI.Page
                 ds.Tables[0].Rows.InsertAt(drSum, ds.Tables[0].Rows.Count);
             }
             gv.DataBind();
+        }         else if (ds_budget != null && ds_budget.Tables[0].Rows.Count > 0)
+        {
+            gv.Caption = header;
+            gv.CaptionAlign = TableCaptionAlign.Left;
+            gv.DataSource = ds;
+
+            if (header == "")
+            {
+                DataRow drSum = ds.Tables[0].NewRow();
+                float[] Sum = new float[20];
+                for (int j = 1; j < ds.Tables[0].Columns.Count - 1; j++)
+                {
+                    if (ds_budget.Tables[0].Rows.Count != 0)
+                        Sum[j] = float.Parse(ds_budget.Tables[0].Rows[0][j].ToString().Trim());
+                    else
+                        Sum[j] = 0;
+                }
+
+                float tmp = 0;
+                for (int i = 0; i < ds.Tables[0].Columns.Count - 1; i++)
+                {
+                    if (i == 0)
+                    {
+                        drSum[0] = meeting.getnextyear() + "-BDGT";
+                    }
+                    else
+                    {
+                        drSum[i] = Sum[i];
+                        tmp += Sum[i];
+                    }
+                }
+                drSum[ds.Tables[0].Columns.Count - 1] = tmp.ToString().Trim();
+                ds.Tables[0].Rows.InsertAt(drSum, ds.Tables[0].Rows.Count);
+            }
+            gv.DataBind();
         }
         else
             gv.Visible = false;
@@ -298,7 +333,7 @@ public partial class RSM_Default : System.Web.UI.Page
             {
                 gvOp = bindDataBySalesOrgByOperation(dsOp, gvOp, "<br />", null);
             }
-            if (dsTotalOp.Tables[0].Rows.Count > 0)
+            if (dsTotalOp.Tables[0].Rows.Count > 0 || ds_budgetTotal.Tables[0].Rows.Count > 0)
             {
                 gvTotalOp = bindDataBySalesOrgByOperation(dsTotalOp, gvTotalOp, "", ds_budgetTotal);
             }
@@ -433,7 +468,7 @@ public partial class RSM_Default : System.Web.UI.Page
                     //by yyan 20100616 item8 add start 
                     if (flagMoney == 1)
                     {
-                        if (dsTotalSum[count].Tables[0].Rows.Count > 0)
+                        if (dsTotalSum[count].Tables[0].Rows.Count > 0 || ds_budgetSum.Tables[0].Rows.Count > 0)
                         {
 
                             gvTotalSum[count] = bindDataBySalesOrgByOperation(dsTotalSum[count], gvTotalSum[count], "", ds_budgetSum);
@@ -467,7 +502,7 @@ public partial class RSM_Default : System.Web.UI.Page
                     }
                     //by yyan 20100616 item8 add end 
 
-                    if (dsTotal[count].Tables[0].Rows.Count > 0)
+                    if (dsTotal[count].Tables[0].Rows.Count > 0 || ds_budget.Tables[0].Rows.Count > 0)
                     {
                         gvTotal[count] = bindDataBySalesOrgByOperation(dsTotal[count], gvTotal[count], "", ds_budget);
                         gvTotal[count].Style.Clear();
