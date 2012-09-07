@@ -29,8 +29,7 @@ public class SQLStatement
     private readonly SQLHelper helper = new SQLHelper();
     private readonly DisplayInfo info = new DisplayInfo();
     private readonly LogUtility log = new LogUtility();
-    //private readonly GetMeetingDate meeting = new GetMeetingDate();
-    private readonly GetSelectMeetingDate meeting = new GetSelectMeetingDate();
+    private readonly GetMeetingDate meeting = new GetMeetingDate();
     //ryzhang item49 20110519 add start
     private readonly GetSelectMeetingDate selectMeeting = new GetSelectMeetingDate();
     private readonly WebUtility web = new WebUtility();
@@ -1346,8 +1345,8 @@ public class SQLStatement
                             //+ " AND YEAR(TimeFlag) = '" + meeting.getyear() + "'"
                             //by ryzhang item49 del end
                             //by ryzhang item49 add start
-                            + " AND YEAR(TimeFlag) = '" + selectMeeting.getyear() + "'"
-                            + " AND MONTH(TimeFlag) = '" + selectMeeting.getmonth() + "'"
+                            + " AND YEAR(TimeFlag) = '" + str_year + "'"
+                            + " AND MONTH(TimeFlag) = '" + str_month + "'"
                             //by ryzhang item49 del start
                             + " THEN (CASE WHEN DeliverY = '" + str_year.Substring(2, 2) + "' OR DeliverY = 'YTD'"
                             + " THEN Amount*" + rate1.ToString().Replace(',', '.') + " ELSE Amount*" +
@@ -1358,8 +1357,8 @@ public class SQLStatement
                         + " WHERE SalesOrgID = " + str_salesOrgID
                         + " AND SegmentID = " + str_segmentID
                         + " AND OperationID = " + str_operationID
-                        + " AND YEAR(TimeFlag) = '" + selectMeeting.getyear() + "'"
-                        + " AND MONTH(TimeFlag) = '" + selectMeeting.getmonth() + "'"
+                        + " AND YEAR(TimeFlag) = '" + str_year + "'"
+                        + " AND MONTH(TimeFlag) = '" + str_month + "'"
                         + " GROUP BY BookingY,DeliverY"
                         + " ORDER BY BookingY,NewDeliverY ASC";
                 //by yyan item8 20110616 add start 
@@ -1379,8 +1378,8 @@ public class SQLStatement
                 for (int i = 0; i < ds_pro.Tables[0].Rows.Count; i++)
                 {
                     temp += ",ROUND(SUM(CASE WHEN ProductID = " + ds_pro.Tables[0].Rows[i][0].ToString().Trim()
-                            + " AND YEAR(TimeFlag) = '" + selectMeeting.getyear() + "'"
-                            + " AND MONTH(TimeFlag) = '" + selectMeeting.getmonth() + "'";
+                            + " AND YEAR(TimeFlag) = '" + str_year + "'"
+                            + " AND MONTH(TimeFlag) = '" + str_month + "'";
                     //by yyan 20110819 itemw118 edit start
                     if (str_month == "3" || str_month == "03")
                     {
@@ -1405,8 +1404,8 @@ public class SQLStatement
                         + " WHERE SalesOrgID = " + str_salesOrgID
                         + " AND SegmentID = " + str_segmentID
                         + " AND OperationID = " + str_operationID
-                        + " AND YEAR(TimeFlag) = '" + selectMeeting.getyear() + "'"
-                        + " AND MONTH(TimeFlag) = '" + selectMeeting.getmonth() + "'"
+                        + " AND YEAR(TimeFlag) = '" + str_year + "'"
+                        + " AND MONTH(TimeFlag) = '" + str_month + "'"
                         + " GROUP BY BookingY,DeliverY"
                         + " ORDER BY BookingY,NewDeliverY ASC";
             }
@@ -4138,7 +4137,7 @@ public class SQLStatement
         DataSet ds = helper.GetDataSet(sql);
         if (ds != null && ds.Tables.Count > 0)
         {
-            ds.Tables[0].Columns.RemoveAt(8);
+            //ds.Tables[0].Columns.RemoveAt(8);
             DataTable dt = ds.Tables[0].Clone();
             //dt.Columns.RemoveAt(8); //special for this total.
             dt.Columns.RemoveAt(4);
@@ -4172,7 +4171,7 @@ public class SQLStatement
             for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
             {
                 where = "SubRegionID=" + ds.Tables[0].Rows[i][0] + " AND CustomerID=" + ds.Tables[0].Rows[i][1]
-                        + " AND ProjectID=" + ds.Tables[0].Rows[i][2] + " AND SalesChannelID=" + ds.Tables[0].Rows[i][3];
+                        + " AND ProjectID=" + ds.Tables[0].Rows[i][2] + " AND SalesChannelID=" + ds.Tables[0].Rows[i][3] + " AND RecordID=" + ds.Tables[0].Rows[i][8];
                 rows = dt.Select(where);
                 if (rows.Length == 0)
                 {
@@ -4186,6 +4185,7 @@ public class SQLStatement
                     row[6] = ds.Tables[0].Rows[i][10];
                     row[7] = ds.Tables[0].Rows[i][11];
                     row[8] = ds.Tables[0].Rows[i][12];
+                    row[9] = ds.Tables[0].Rows[i][13];
                     productIDList.Clear();
                     operationNameList.Clear();
                     rows = ds.Tables[0].Select(where);
@@ -4194,7 +4194,7 @@ public class SQLStatement
                         if (!productIDList.Contains(rows[j][4]))
                         {
                             productIDList.Add(rows[j][4]);
-                            operationNameList.Add(rows[j][14].ToString().Trim());
+                            operationNameList.Add(rows[j][15].ToString().Trim());
                         }
                     }
                     rows = ds.Tables[0].Select(where + " AND bookingY='" + year.Substring(2) + "'");
@@ -4206,14 +4206,14 @@ public class SQLStatement
                         {
                             if (productIDList.Contains(dsPro.Tables[0].Rows[j][0]))
                             {
-                                row[8 + j*2 + 1] = "0";
-                                row[8 + j*2 + 2] = operationNameList[index];
+                                row[9 + j*2 + 1] = "0";
+                                row[9 + j*2 + 2] = operationNameList[index];
                                 index++;
                             }
                             else
                             {
-                                row[8 + j*2 + 1] = "0";
-                                row[8 + j*2 + 2] = string.Empty;
+                                row[9 + j*2 + 1] = "0";
+                                row[9 + j*2 + 2] = string.Empty;
                             }
                         }
                     }
@@ -4223,9 +4223,9 @@ public class SQLStatement
                         for (int j = 0; j < rows.Length; j++)
                         {
                             sumRow = ds.Tables[0].NewRow();
-                            for (int n = 0; n <= 18; n++)
+                            for (int n = 0; n <= 19; n++)
                             {
-                                sumRow[n] = n == 15 ? 0 : rows[j][n];
+                                sumRow[n] = n == 16 ? 0 : rows[j][n];
                             }
                             notExistFlag = true;
                             for (int k = 0; k < sumRows.Count; k++)
@@ -4256,12 +4256,12 @@ public class SQLStatement
                                     && string.Equals(rows[j][4].ToString(), rows[k][4].ToString()))
                                 {
                                     if (convertFlag)
-                                        sumRows[j][15] = Convert.ToDouble(sumRows[j][15]) +
-                                                         Convert.ToDouble(rows[k][15])*
+                                        sumRows[j][16] = Convert.ToDouble(sumRows[j][16]) +
+                                                         Convert.ToDouble(rows[k][16])*
                                                          (rows[k][7].ToString().Trim() == "YTD" ? db_rate1 : db_rate2);
                                     else
-                                        sumRows[j][15] = Convert.ToDouble(sumRows[j][15]) +
-                                                         Convert.ToDouble(rows[k][15]);
+                                        sumRows[j][16] = Convert.ToDouble(sumRows[j][16]) +
+                                                         Convert.ToDouble(rows[k][16]);
                                 }
                             }
                         }
@@ -4277,15 +4277,15 @@ public class SQLStatement
                                 //}
                                 //else
                                 //{
-                                row[8 + j*2 + 1] = Math.Round(Convert.ToDouble(rows[index][15]), 0);
+                                row[9 + j*2 + 1] = Math.Round(Convert.ToDouble(rows[index][16]), 0);
                                 //}
-                                row[8 + j*2 + 2] = rows[index][14];
+                                row[9 + j*2 + 2] = rows[index][15];
                                 index++;
                             }
                             else
                             {
-                                row[8 + j*2 + 1] = "0";
-                                row[8 + j*2 + 2] = string.Empty;
+                                row[9 + j*2 + 1] = "0";
+                                row[9 + j*2 + 2] = string.Empty;
                             }
                         }
                     }

@@ -1146,7 +1146,7 @@ public partial class SalesOrgMgr_SalesOrgBookingSalesDataReadonly : System.Web.U
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
                         float tmp = 0;
-                        for (int count2 = 9; count2 < ds.Tables[0].Columns.Count - 2; count2 += 2)
+                        for (int count2 = 10; count2 < ds.Tables[0].Columns.Count - 2; count2 += 2)
                         {
                             tmp += float.Parse(dr[count2].ToString());
                         }
@@ -1168,19 +1168,19 @@ public partial class SalesOrgMgr_SalesOrgBookingSalesDataReadonly : System.Web.U
 
                 bf.ItemStyle.HorizontalAlign = HorizontalAlign.Left;
                 bf.HeaderStyle.HorizontalAlign = HorizontalAlign.Right;
-                if (i == 4 || i == 5 || i == 6 || i == 7)
+                if (i == 5 || i == 6 || i == 7 || i == 8)
                 {
                     bf.ItemStyle.Width = 150;
                     bf.HeaderStyle.HorizontalAlign = HorizontalAlign.Left;
                 }
-                if (i == 8)
+                if (i == 9)
                 {
                     bf.ItemStyle.Width = 50;
                     bf.HeaderStyle.HorizontalAlign = HorizontalAlign.Left;
                 }
-                if (i > 8)
+                if (i > 9)
                 {
-                    if (i % 2 == 0)
+                    if (i % 2 != 0)
                     {
                         bf.ItemStyle.HorizontalAlign = HorizontalAlign.Left;
                         bf.HeaderStyle.HorizontalAlign = HorizontalAlign.Left;
@@ -1204,6 +1204,7 @@ public partial class SalesOrgMgr_SalesOrgBookingSalesDataReadonly : System.Web.U
             gv.Columns[1].Visible = false;
             gv.Columns[2].Visible = false;
             gv.Columns[3].Visible = false;
+            gv.Columns[4].Visible = false;
             for (int i = 0; i < gv.Rows.Count; i++)
             {
                 addCellsAttributes(gv.Rows[i], 6, 1);
@@ -1865,7 +1866,7 @@ public partial class SalesOrgMgr_SalesOrgBookingSalesDataReadonly : System.Web.U
             sheet.Cells.WrapText = false;
             sheet.Cells.EntireColumn.AutoFit();
             // Export
-            string path = Server.MapPath("~") + @"ExcelReport\" + DateTime.Now.ToString("yyyyMMdd") + @"\";
+            string path = Server.MapPath("~") + @"\ExcelReport\" + DateTime.Now.ToString("yyyyMMdd") + @"\";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);

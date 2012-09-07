@@ -4398,10 +4398,17 @@ public partial class BookingSalesData : System.Web.UI.Page
         {
             sql.AppendLine(" and RecordID <>" + recordID);
         }
+        sql.AppendLine(" group by operationId, projectId, recordId");
         DataSet ds = helper.GetDataSet(sql.ToString());
-        if (ds != null && (int)ds.Tables[0].Rows[0].ItemArray[0] ==7)
-            return false;
-        else
+        if(ds != null) {
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                if ((int)ds.Tables[0].Rows[i].ItemArray[0] > 6)
+                {
+                    return false;
+                }
+            }
+        }
             return true;
     }
 
