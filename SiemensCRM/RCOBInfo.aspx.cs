@@ -11,6 +11,7 @@ using System.Web.UI.HtmlControls;
 using AjaxPro;
 using System.Text;
 
+[AjaxPro.AjaxNamespace("RCOBInfo")]
 public partial class RCOBInfo : System.Web.UI.Page
 {
     SQLHelper helper = new SQLHelper();
