@@ -140,6 +140,10 @@
     function showRCOBPage(textCID, hidSubAmountCID, hidPercentageCID, RSMID, salesOrgID, subRgionID, customerID,
     bookingY, deliverY, segmentID, operationID, projectID, salesChannelID, year, month, productID) {
         var url = "RCOBEdit.aspx?timestame=" + Date.parse(new Date());
+        var value = document.getElementById(hidSubAmountCID).value;
+        var percentage = document.getElementById(hidPercentageCID).value;
+        var text = document.getElementById(textCID).value;
+
         var argu = new Array();
         argu.push(RSMID);
         argu.push(salesOrgID);
@@ -154,6 +158,9 @@
         argu.push(year);
         argu.push(month);
         argu.push(productID);
+        argu.push(text);
+        argu.push(percentage);
+        argu.push(value);
         var returnValue = window.showModalDialog(url, argu, 'dialogWidth:320px;dialogHeight:180px;resizable:yes;status:no;');
         if (returnValue != null) {
             document.getElementById(hidSubAmountCID).value = returnValue[2];

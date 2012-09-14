@@ -57,6 +57,10 @@ public partial class RCOBEdit : System.Web.UI.Page
             //yyan itemw136 20110908 edit start 
             valueArr[0] = ds.Tables[0].Rows[0]["Value"].ToString();
             valueArr[1] = ds.Tables[0].Rows[0]["Percentage"].ToString();
+            if ("" == valueArr[1])
+            {
+                valueArr[1] = "0";
+            }
             valueArr[2] = ds.Tables[0].Rows[0]["Amount"].ToString();
             //yyan itemw136 20110908 edit end 
         }

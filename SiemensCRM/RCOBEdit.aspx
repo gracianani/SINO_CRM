@@ -93,14 +93,21 @@
         array.push(paramArr[10]);
         array.push(paramArr[11]);
         array.push(paramArr[12]);
-        RCOBEdit.bindDataSource(array, receiveInitPage);
+        //RCOBEdit.bindDataSource(array, receiveInitPage);
+        document.getElementById("txtAmount").value = paramArr[13];
+        if (paramArr[14] == "") {
+            paramArr[14] = "0";
+        }
+        document.getElementById("txtPercentage").value = paramArr[14];
+        document.getElementById("txtFAmount").value = paramArr[15];
     }
     
     function receiveInitPage(result) {
         var value = result.value;
-        document.getElementById("txtAmount").value = value[2];
-        document.getElementById("txtPercentage").value = value[1];
-        document.getElementById("txtFAmount").value = value[0];
+        var paramArr = window.dialogArguments;
+        console.log(paramArr);
+
+
     }
     </script>
 
