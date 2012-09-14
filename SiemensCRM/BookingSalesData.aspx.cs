@@ -1961,12 +1961,6 @@ public partial class BookingSalesData : System.Web.UI.Page
                         var product = ds_product.Tables[0].Rows[key];
                         dict.Add(key, new String[] { product.ItemArray[0].ToString(), OpID });
                     }
-                    if(!validateOperation(dict, getRSMID().Trim(), getSalesOrgID().Trim(), getSegmentID(), CouID, CustomerID, ProjectID, SalesChannelID, ""))
-                    {
-                        gv.EditIndex = -1;
-                        ScriptManager.RegisterStartupScript(this.upYTD1, this.upYTD1.GetType(), "UpdateExistError", "alert('The record had been existed!');", true);
-                        return;
-                    }
                     int recordId = getRowId(bookingY, deliverY, CouID, CustomerID, ProjectID, SalesChannelID, getSalesOrgID().Trim())+1;
                     for (int i = 0; i < ds_product.Tables[0].Rows.Count; i++)
                         {
@@ -4360,22 +4354,8 @@ public partial class BookingSalesData : System.Web.UI.Page
     private bool validateOperation(Dictionary<int, string[]> opDic, string RSMID, string salesOrgID, string segmentID,
         string subregionID, string customerID, string projectID, string salesChannelID, string recordID)
     {
-        StringBuilder sb = new StringBuilder();
 
-        // productID and operationId defines here.
         
-        foreach (var item in opDic)
-        { 
-            if (sb.Length < 1)
-            {
-                sb.Append(string.Format("([ProductID]={0} and [OperationID]={1} )", item.Value[0], item.Value[1]));
-            }
-            else
-            {
-                sb.Append(string.Format(" or ([ProductID]={0} and [OperationID]={1} )", item.Value[0], item.Value[1]));
-            }
-        }
-       
         StringBuilder sql = new StringBuilder();
         sql.AppendLine(" select count(*) from ");
         sql.AppendLine("   Bookings ");
@@ -4389,27 +4369,33 @@ public partial class BookingSalesData : System.Web.UI.Page
         sql.AppendLine("  AND SalesChannelID=" + salesChannelID);
         sql.AppendLine("  AND Year(TimeFlag)=" + year);
         sql.AppendLine("  AND Month(TimeFlag)=" + month);
+        sql.AppendLine(" and RecordID <>" + recordID);
+        
+        DataSet ds;
+        // productID and operationId defines here.
 
-        // append product ID and operation Id constrains.
-       if (sb.Length > 0)
-            sql.AppendLine(" and (" + sb.ToString() + ")");
-  
-        if (!string.IsNullOrEmpty(recordID))
+        foreach (var item in opDic)
         {
-            sql.AppendLine(" and RecordID <>" + recordID);
-        }
-        sql.AppendLine(" group by operationId, projectId, recordId");
-        DataSet ds = helper.GetDataSet(sql.ToString());
-        if(ds != null) {
-            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            var value = Convert.ToDouble( item.Value[2]);
+            if (value != 0)
             {
-                if ((int)ds.Tables[0].Rows[i].ItemArray[0] > 6)
+                var condition = string.Format(" and [ProductID]={0} and [OperationID]={1} and [Amount] <> 0 ", item.Value[0], item.Value[1]);
+                var newQuerry = sql.ToString() + condition;
+                ds = helper.GetDataSet(newQuerry);
+                if (ds != null)
                 {
-                    return false;
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                    {
+                        if ((int)ds.Tables[0].Rows[i].ItemArray[0] > 0)
+                        {
+                            return false;
+                        }
+                    }
                 }
             }
         }
-            return true;
+        
+        return true;
     }
 
     [AjaxMethod]
