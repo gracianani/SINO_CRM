@@ -134,7 +134,20 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
                             helper.ExecuteNonQuery(CommandType.Text, strSQL, null);
                             strSQL = "SELECT MAX(ID) FROM [CustomerName]";
                             object dummyID = helper.ExecuteScalar(CommandType.Text, strSQL, null);
+
                             strCustomerNameID = Convert.ToString(dummyID);
+
+                            //create new customer
+                            strSQL = "INSERT INTO [Customer](NameID,TypeID,SalesChannelID,CountryID,City,Address,Department,Deleted) VALUES('" +
+                            strCustomerNameID +
+                             "', '1', '-1', '"+getSubregionID(str_Subregion)+"', '', '', '', '0')";
+                            helper.ExecuteNonQuery(CommandType.Text, strSQL, null);
+                            //get new customer id
+                            strSQL = "SELECT MAX(ID) FROM [Customer] Where NameID=" + strCustomerNameID;
+                            object customerID = helper.ExecuteScalar(CommandType.Text, strSQL, null);
+                            strCustomerNameID = Convert.ToString(customerID);
+
+                            
 
                         }
                         else
@@ -299,12 +312,76 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
         label_visible.ForeColor = System.Drawing.Color.Red;
         return false;
     }
+    protected int getRowId(string str_RSMID, string str_bookingY, string str_deliverY, string str_countryID, string str_customerID, string str_projectID, string SalesChannelID, string str_salesorgID, string str_segmentID, string str_timeFlag)
+    {
+        string sql = "SELECT  case when MAX(RecordID) is null then 0 else MAX(RecordID) end FROM [Bookings]"
+                    + " WHERE RSMID = " + str_RSMID
+                    + " AND CountryID = " + str_countryID
+                    + " AND BookingY = '" + str_bookingY + "'"
+                    + " AND DeliverY = '" + str_deliverY + "'"
+                    + " AND SegmentID = '" + str_segmentID + "'"
+                    + " AND TimeFlag = '" + str_timeFlag + "'";
 
+        DataSet ds = helper.GetDataSet(sql);
+        return Convert.ToInt32(ds.Tables[0].Rows[0][0]);
+    }
     private int InsData(string RSMID, string SalesOrgID, string CountryID,
         string CustomerNameID, string BookingY, string DeliverY, string SegmentID,
         string ProductID, string OperationID, string Amount, string Comments,
         string DeliveryinFY, string NOinFY, string TimeFlag)
     {
+
+        DataSet ds_product = getProductBySegment(SegmentID);
+        var dict = new Dictionary<int, string[]>();
+
+        for (int key = 0; key < ds_product.Tables[0].Rows.Count; key++)
+        {
+            var product = ds_product.Tables[0].Rows[key];
+            dict.Add(key, new String[] { product.ItemArray[0].ToString(), OperationID });
+        }
+        int recordId = getRowId(RSMID, BookingY, DeliverY, CountryID, CustomerNameID, "-1", "-1", SalesOrgID, SegmentID, TimeFlag) + 1;
+        int i;
+        for (i = 0; i < ds_product.Tables[0].Rows.Count; i++)
+        {
+            string insAmount = "0";
+            if (ProductID.Equals(ds_product.Tables[0].Rows[i][0].ToString()))
+            {
+                insAmount = Amount;
+            }
+            string insert_booking = "INSERT INTO [Bookings](RecordID,RSMID, SalesOrgID, CountryID, CustomerID, BookingY, DeliverY, SegmentID, ProductID, OperationID, ProjectID, SalesChannelID, Amount, Comments,[Delivery in FY], [NO in FY],  TimeFlag)"
+                        + " VALUES("
+                        + recordId.ToString() + ","
+                        + RSMID + ","
+                        + SalesOrgID + ","
+                        + CountryID + ","
+                        + CustomerNameID + ","
+                        + "'" + BookingY + "'" + ","
+                        + "'" + DeliverY + "'" + ","
+                        + SegmentID + ","
+                        + ProductID + ","
+                        + OperationID + ","
+                        + "-1,"
+                        + "-1,"
+                        + insAmount + ","
+                        + "NULL,'"
+                        + DeliveryinFY + "','"
+                        + NOinFY + "','"
+                        + TimeFlag + "')";
+            int count = helper.ExecuteNonQuery(CommandType.Text, insert_booking, null);
+
+            if (count == 1)
+            {
+                //success
+            }
+            else
+            {
+                //add error
+                break;
+            }
+            
+        }
+        return i;
+        /*
         StringBuilder sql = new StringBuilder();
         sql.AppendLine(" INSERT INTO ");
         sql.AppendLine("   Bookings( ");
@@ -323,7 +400,8 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
         sql.AppendLine("     Comments, ");
         sql.AppendLine("     [Delivery in FY], ");
         sql.AppendLine("     [NO in FY], ");
-        sql.AppendLine("     TimeFlag) ");
+        sql.AppendLine("     TimeFlag, ");
+        sql.AppendLine("    RecordId) ");
         sql.AppendLine(" VALUES( ");
         sql.AppendLine("   @RSMID,");
         sql.AppendLine("   @SalesOrgID,");
@@ -340,7 +418,8 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
         sql.AppendLine("   @Comments,");
         sql.AppendLine("   @DeliveryinFY,");
         sql.AppendLine("   @NOinFY,");
-        sql.AppendLine("   @TimeFlag)");
+        sql.AppendLine("   @TimeFlag,");
+        sql.AppendLine("   @RecordId)");
         SqlParameter[] paramArray = new SqlParameter[14];
         paramArray[0] = new SqlParameter("@RSMID", RSMID);
         paramArray[1] = new SqlParameter("@SalesOrgID", SalesOrgID);
@@ -356,7 +435,9 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
         paramArray[11] = new SqlParameter("@DeliveryinFY", DeliveryinFY);
         paramArray[12] = new SqlParameter("@NOinFY", NOinFY);
         paramArray[13] = new SqlParameter("@TimeFlag", TimeFlag);
+        paramArray[14] = new SqlParameter("@RecordId", recordId);
         return helper.ExecuteNonQuery(CommandType.Text, sql.ToString(), paramArray);
+        */
     }
 
     private int UpdData(string RSMID, string SalesOrgID, string CountryID,
