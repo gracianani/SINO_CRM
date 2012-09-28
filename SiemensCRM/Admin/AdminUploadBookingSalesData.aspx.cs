@@ -140,7 +140,7 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
                             //create new customer
                             strSQL = "INSERT INTO [Customer](NameID,TypeID,SalesChannelID,CountryID,City,Address,Department,Deleted) VALUES('" +
                             strCustomerNameID +
-                             "', '1', '-1', '"+getSubregionID(str_Subregion)+"', '', '', '', '0')";
+                             "', '-1', '-1', '"+getSubregionID(str_Subregion)+"', '', '', '', '0')";
                             helper.ExecuteNonQuery(CommandType.Text, strSQL, null);
                             //get new customer id
                             strSQL = "SELECT MAX(ID) FROM [Customer] Where NameID=" + strCustomerNameID;
@@ -153,6 +153,23 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
                         else
                         {
                             strCustomerNameID = getCustomerNameID(strCustomerName);
+                            //get customer id by customer name id
+                            string strSQL = "SELECT MAX(ID) FROM [Customer] Where NameID=" + strCustomerNameID;
+                            object customerID = helper.ExecuteScalar(CommandType.Text, strSQL, null);
+                            strCustomerNameID = Convert.ToString(customerID);
+
+                            if (string.IsNullOrEmpty(strCustomerNameID))
+                            {
+                                //create new customer
+                                strSQL = "INSERT INTO [Customer](NameID,TypeID,SalesChannelID,CountryID,City,Address,Department,Deleted) VALUES('" +
+                                strCustomerNameID +
+                                 "', '-1', '-1', '" + getSubregionID(str_Subregion) + "', '', '', '', '0')";
+                                helper.ExecuteNonQuery(CommandType.Text, strSQL, null);
+                                //get new customer id
+                                strSQL = "SELECT MAX(ID) FROM [Customer] Where NameID=" + strCustomerNameID;
+                                customerID = helper.ExecuteScalar(CommandType.Text, strSQL, null);
+                                strCustomerNameID = Convert.ToString(customerID);
+                            }
                         }
                         //Volume k local currency
                         string str_amount_local = ds.Rows[i][9].ToString().Trim();
@@ -326,7 +343,7 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
         return Convert.ToInt32(ds.Tables[0].Rows[0][0]);
     }
     private int InsData(string RSMID, string SalesOrgID, string CountryID,
-        string CustomerNameID, string BookingY, string DeliverY, string SegmentID,
+        string CustomerID, string BookingY, string DeliverY, string SegmentID,
         string ProductID, string OperationID, string Amount, string Comments,
         string DeliveryinFY, string NOinFY, string TimeFlag)
     {
@@ -339,29 +356,31 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
             var product = ds_product.Tables[0].Rows[key];
             dict.Add(key, new String[] { product.ItemArray[0].ToString(), OperationID });
         }
-        int recordId = getRowId(RSMID, BookingY, DeliverY, CountryID, CustomerNameID, "-1", "-1", SalesOrgID, SegmentID, TimeFlag) + 1;
+        int recordId = getRowId(RSMID, BookingY, DeliverY, CountryID, CustomerID, "-1", "-1", SalesOrgID, SegmentID, TimeFlag) + 1;
         int i;
         for (i = 0; i < ds_product.Tables[0].Rows.Count; i++)
         {
             string insAmount = "0";
-            if (ProductID.Equals(ds_product.Tables[0].Rows[i][0].ToString()))
+            string curProductId = ds_product.Tables[0].Rows[i][0].ToString();
+            if (ProductID.Equals(curProductId))
             {
                 insAmount = Amount;
             }
-            string insert_booking = "INSERT INTO [Bookings](RecordID,RSMID, SalesOrgID, CountryID, CustomerID, BookingY, DeliverY, SegmentID, ProductID, OperationID, ProjectID, SalesChannelID, Amount, Comments,[Delivery in FY], [NO in FY],  TimeFlag)"
+            string insert_booking = "INSERT INTO [Bookings](RecordID,RSMID, SalesOrgID, CountryID, CustomerID, BookingY, DeliverY, SegmentID, ProductID, OperationID, ProjectID, SalesChannelID, Amount,Value, Comments,[Delivery in FY], [NO in FY],  TimeFlag)"
                         + " VALUES("
                         + recordId.ToString() + ","
                         + RSMID + ","
                         + SalesOrgID + ","
                         + CountryID + ","
-                        + CustomerNameID + ","
+                        + CustomerID + ","
                         + "'" + BookingY + "'" + ","
                         + "'" + DeliverY + "'" + ","
                         + SegmentID + ","
-                        + ProductID + ","
+                        + curProductId + ","
                         + OperationID + ","
                         + "-1,"
                         + "-1,"
+                        + insAmount + ","
                         + insAmount + ","
                         + "NULL,'"
                         + DeliveryinFY + "','"
@@ -441,7 +460,7 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
     }
 
     private int UpdData(string RSMID, string SalesOrgID, string CountryID,
-        string CustomerNameID, string BookingY, string DeliverY, string SegmentID,
+        string CustomerID, string BookingY, string DeliverY, string SegmentID,
         string ProductID, string OperationID, string Amount, string DeliveryinFY,
         string NOinFY, string TimeFlag)
     {
@@ -450,6 +469,7 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
         sql.AppendLine("   Bookings ");
         sql.AppendLine(" SET ");
         sql.AppendLine("   Amount=Amount+ " + Amount);
+        sql.AppendLine(" ,Value=Amount");
         sql.AppendLine(" WHERE ");
         sql.AppendLine("   RSMID=@RSMID");
         sql.AppendLine("   AND SalesOrgID=@SalesOrgID");
@@ -470,7 +490,7 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
         paramArray[1] = new SqlParameter("@RSMID", RSMID);
         paramArray[2] = new SqlParameter("@SalesOrgID", SalesOrgID);
         paramArray[3] = new SqlParameter("@CountryID", CountryID);
-        paramArray[4] = new SqlParameter("@CustomerID", CustomerNameID);
+        paramArray[4] = new SqlParameter("@CustomerID", CustomerID);
         paramArray[5] = new SqlParameter("@BookingY", BookingY);
         paramArray[6] = new SqlParameter("@DeliverY", DeliverY);
         paramArray[7] = new SqlParameter("@SegmentID", SegmentID);
@@ -513,7 +533,7 @@ public partial class Admin_AdminUploadBookingSalesData : System.Web.UI.Page
     protected string getRSMID(string str)
     {
         str = str.Replace("'", "''");
-        string sql = "SELECT [User].UserID FROM [User]  WHERE [User].Abbr = '" + str + "' AND [User].Deleted = 0 ";
+        string sql = "SELECT [User].UserID FROM [User]  WHERE [User].Abbr = '" + str + "' AND [User].Deleted = 0 Order By [User].RoleID DESC";
         DataSet ds = helper.GetDataSet(sql);
         if (ds.Tables[0].Rows.Count >= 1)
             return ds.Tables[0].Rows[0][0].ToString().Trim();
