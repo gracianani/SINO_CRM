@@ -513,8 +513,8 @@ public partial class MarketingMgr_MarketingMgrActualBl : System.Web.UI.Page
                 this.ibtn_green.Enabled = false;
                 this.ibtn_red.Enabled = false;
                 this.lbtn_add.Visible = false;
-                this.gv_actualBaclog.Columns[gv_actualBaclog.Columns.Count - 1].Visible = false;
-                this.gv_actualBaclog.Columns[gv_actualBaclog.Columns.Count - 2].Visible = false;
+               // this.gv_actualBaclog.Columns[gv_actualBaclog.Columns.Count - 1].Visible = false;
+               // this.gv_actualBaclog.Columns[gv_actualBaclog.Columns.Count - 2].Visible = false;
             }
             else
             {
