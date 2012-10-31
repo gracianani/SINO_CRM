@@ -303,11 +303,11 @@ public partial class MarketingMgr_MarketingMgrActualBl : System.Web.UI.Page
         }
         temp += " FROM [ActualSalesandBL]"
              // By daixuesong 20110510 Item 21,36 Delete Start    
-             // + " WHERE MarketingMgrID = " + getGeneralMarketingID() + " AND SegmentID = " + str_segmentID
+              + " WHERE MarketingMgrID = " + getGeneralMarketingID() + " AND SegmentID = " + str_segmentID
              // By daixuesong 20110510 Item 21,36 Delete End  
 
              // By daixuesong 20110510 Item 21,36 ADD Start  
-              + " WHERE SegmentID = " + str_segmentID
+       //       + " WHERE SegmentID = " + str_segmentID
              // By daixuesong 20110510 Item 21,36 ADD End  
               + " AND OperationID = " + str_operationID + " AND SalesOrgID = " + str_salesorgID
               + " AND YEAR(TimeFlag) = '" + year + "'" + " AND MONTH(TimeFlag) = '" + month + "'"

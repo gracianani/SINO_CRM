@@ -199,7 +199,8 @@ public partial class Admin_AdminSalesData : System.Web.UI.Page
                                 + " INNER JOIN [SalesOrg] ON [SalesOrg].ID = [SalesOrg_Segment].SalesOrgID"
                                 + " WHERE [SalesOrg_Segment].SegmentID = " + str_segmentID
                                 //by yyan 20110531 item w22 add start
-                                + " AND [SalesOrg_Segment].Deleted=0 AND [SalesOrg].Deleted=0 AND [Segment].Deleted=0 "
+                                //+ " AND [SalesOrg_Segment].Deleted=0 "
+                                + " AND [SalesOrg].Deleted=0 AND [Segment].Deleted=0 "
                                 //by yyan 20110531 item w22 add end
                                 + " GROUP BY [SalesOrg].Abbr,[SalesOrg].ID"
                                 + " ORDER BY [SalesOrg].Abbr ASC";
